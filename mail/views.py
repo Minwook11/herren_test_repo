@@ -4,6 +4,7 @@ import requests
 
 from django.views import View
 from django.http import JsonResponse
+from django.db import IntegrityError
 
 from .models import Address
 
@@ -40,6 +41,8 @@ class SubscribeView(View):
             ).save()
         except KeyError:
             return JsonResponse({'message' : 'KEY_ERROR'}, status = 400)
+        except IntegrityError:
+            return JsonResponse({'message' : 'DUPLICATE_EMAIL'}, status = 400)
         return JsonResponse({'message' : 'REGIST_SUCCESS'}, status = 200)
 
 class UnsubscribeView(View):
