@@ -17,16 +17,14 @@ def send_mail(address, subject, content):
     address_re = re.compile('(?<=\@).+')
     address_check = address_re.search(address)
     if 'google.com' == address_check.group() or 'naver.com' == address_check.group():
-        print('google or naver check : {}'.format(address))
-        url = 'http://python.recruit.herrencorp.com/api/v2/mail'
+        url     = 'http://python.recruit.herrencorp.com/api/v2/mail'
         headers = {
             'Content-Type'  : 'application/json',
             'Authorization' : 'herren-recruit-python'
         }
         response = requests.post(url = url, data = data, headers = headers)
     else:
-        print('else check : {}'.format(address))
-        url = 'http://python.recruit.herrencorp.com/api/v1/mail'
+        url     = 'http://python.recruit.herrencorp.com/api/v1/mail'
         headers = {
             'Content-Type'  : 'application/x-www-form-urlencoded',
             'Authorization' : 'herren-recruit-python'
