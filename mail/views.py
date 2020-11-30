@@ -22,7 +22,7 @@ def send_mail(address, subject, content):
             'Content-Type'  : 'application/json',
             'Authorization' : 'herren-recruit-python'
         }
-        response = requests.post(url = url, data = data, headers = headers)
+        response = requests.post(url = url, data = json.dumps(data), headers = headers)
     else:
         url     = 'http://python.recruit.herrencorp.com/api/v1/mail'
         headers = {
