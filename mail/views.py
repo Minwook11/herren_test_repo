@@ -99,3 +99,14 @@ class SendView(View):
             }
 
             return JsonResponse({'message' : response}, status = 200)
+
+class ListView(View):
+    def get(self, request, *args, **kwargs):
+        email = request.GET.get('email', None)
+        if not(email):
+            return JsonResponse({'message' : 'WRONG_EMAIL_ADDRESS'}, status = 400)
+
+        url = 'http://python.recruit.herrencorp.com/api/v1/inbox/' + email
+        response = requests.get(url = url, headers = { 'Authorization' : 'herren-recruit-python' })
+
+        return JsonResponse({'message' : response.json()}, status = 200)
