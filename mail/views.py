@@ -9,17 +9,27 @@ from django.db    import IntegrityError
 from .models import Address
 
 def send_mail(address, subject, content):
-    url = 'http://python.recruit.herrencorp.com/api/v1/mail'
-    headers = {
-        'Content-Type'  : 'application/x-www-form-urlencoded',
-        'Authorization' : 'herren-recruit-python'
-    }
     data = {
         'mailto'  : address,
         'subject' : subject,
         'content' : content
     }
-    response = requests.post(url = url, data = data, headers = headers)
+    address_re = re.compile('(?<=\@).+')
+    address_check = address_re.search(address)
+    if 'google.com' == address_check.group() or 'naver.com' == address_check.group():
+        url     = 'http://python.recruit.herrencorp.com/api/v2/mail'
+        headers = {
+            'Content-Type'  : 'application/json',
+            'Authorization' : 'herren-recruit-python'
+        }
+        response = requests.post(url = url, data = data, headers = headers)
+    else:
+        url     = 'http://python.recruit.herrencorp.com/api/v1/mail'
+        headers = {
+            'Content-Type'  : 'application/x-www-form-urlencoded',
+            'Authorization' : 'herren-recruit-python'
+        }
+        response = requests.post(url = url, data = data, headers = headers)
 
     return response.json()['status']
 
