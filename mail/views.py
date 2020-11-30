@@ -73,6 +73,8 @@ class SendView(View):
         content = 'THIS IS JUST TEST'
         if not(target):
             address_list = Address.objects.all()
+            if not(address_list):
+                return JsonResponse({'message' : 'EMPTY_EMAIL_LIST'}, status = 400)
 
             all_response = [{
                 'name' : address.name,
@@ -87,7 +89,7 @@ class SendView(View):
         if target:
             address = Address.objects.get(email = target)
             if not(address):
-                return JsonResponse({'message' : 'WRONG_TARGET_NAME'}, status = 400)
+                return JsonResponse({'message' : 'WRONG_TARGET_EMAIL'}, status = 400)
 
             response = {
                 'name' : address.name,
